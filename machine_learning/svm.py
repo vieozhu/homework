@@ -9,6 +9,7 @@
 from sklearn import svm
 from sklearn import model_selection
 import numpy as np
+import datetime
 
 root_path = './data/heart.txt'
 
@@ -74,8 +75,10 @@ def svm_train(data, x_train, x_test, y_train, y_test):
     print("真实值:")
     print(data[:, 13])
 
+
 if __name__ == "__main__":
     print("start...")
+    start_time = datetime.datetime.now()
 
     # 读入数据
     data = data_read(root_path)
@@ -83,3 +86,8 @@ if __name__ == "__main__":
     x_train, x_test, y_train, y_test = data_split(data)
     # svm分类器
     svm_train(data, x_train, x_test, y_train, y_test)
+
+    end_time = datetime.datetime.now()
+    time_consume = (end_time - start_time).microseconds
+    print("time_consume(ms): ")
+    print(time_consume)
