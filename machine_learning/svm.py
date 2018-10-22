@@ -11,10 +11,9 @@ from sklearn import model_selection
 import numpy as np
 
 root_path = './data/heart.txt'
-test_path = './data/test.txt'
 
 
-def file_read(data_path):
+def data_read(data_path):
     """文件读入
     :param data_path: 数据集文件
     :return:返回列表
@@ -34,11 +33,11 @@ def data_split(data):
     x_train, x_test, y_train, y_test = model_selection.train_test_split(
         x, y, random_state=1, train_size=0.7)
 
-    # print x_test
+    # print y_test
     return x_train, x_test, y_train, y_test
 
 
-def svm_train(test_data, x_train, x_test, y_train, y_test):
+def svm_train(data, x_train, x_test, y_train, y_test):
     """支持向量机
     svc二分类
     scr曲线你和函数回归
@@ -50,28 +49,37 @@ def svm_train(test_data, x_train, x_test, y_train, y_test):
     decision_function_shape='ovo'时，为one v one，即将类别两两之间进行划分，用二分类的方法模拟多分类的结果。
     """
 
-    clf = svm.SVC(C=0.08, kernel="linear", decision_function_shape="ovr")  # 线性核分类器
+    model = svm.SVC(C=0.08, kernel="linear", decision_function_shape="ovr")  # 线性核分类器
     # clf = svm.SVC(C=0.8, kernel="rbf", gamma=20, decision_function_shape="ovr")  # 高斯核分类器
 
-    clf.fit(x_train, y_train.ravel())  # training the svc model
+    model.fit(x_train, y_train.ravel())  # training the svc model,ravel转置
 
     # 计算准确率
-    print("训练集准确率:")
-    print(clf.score(x_train, y_train))  # 训练集准确率，linear核参数0.08达到0.86772
-    print("测试集准确率:")
-    print(clf.score(x_test, y_test))  # 测试集准确率，linear核参数0.08达到0.85185
+    print("训练集拟合度:")
+    print(model.score(x_train, y_train))  # 训练集拟合度，linear核参数0.08达到0.86772
+    print("测试集拟合度:")
+    print(model.score(x_test, y_test))  # 测试集拟合度，linear核参数0.08达到0.85185
+    print("整个数据集拟合度:")
+    print(model.score(data[:, 0:13], data[:, 13]))  # 测试集拟合度，linear核参数0.08达到0.85185
 
-    # 外部测试
-    print("predict:")
-    print(clf.predict(test_data))
+    # 验证集预测
+    print("验证集预测值:")
+    print(model.predict(x_test))
+    print("验证集真实值:")
+    print(y_test.ravel())
 
+    # 测试整个数据集
+    print("预测值:")
+    print(model.predict(data[:, 0:13]))
+    print("真实值:")
+    print(data[:, 13])
 
 if __name__ == "__main__":
     print("start...")
+
     # 读入数据
-    data = file_read(root_path)
-    test_data = file_read(test_path)
+    data = data_read(root_path)
     # 数据集划分
     x_train, x_test, y_train, y_test = data_split(data)
     # svm分类器
-    svm_train(test_data, x_train, x_test, y_train, y_test)
+    svm_train(data, x_train, x_test, y_train, y_test)
