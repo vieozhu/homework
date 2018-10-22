@@ -1,6 +1,9 @@
 # coding:utf-8
 #
+# 调用sklearn库实现svm算法
+#
 # reference from: https://www.cnblogs.com/luyaoblog/p/6775342.html
+# ==================================================================
 
 
 from sklearn import svm
