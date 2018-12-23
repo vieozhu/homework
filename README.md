@@ -1,2 +1,6 @@
 # homework
 课程作业
+svm_simple_implement：简单调用svm框架
+svm_image_classify：基于svm实现图像分类
+kmeans_image_classify：基于kmeans实现图像聚类
+dbscan_simple_implement：简单实现聚类算法dbscan
